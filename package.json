@@ -16,7 +16,7 @@
   "keywords": [],
   "author": "Eugene Shevchenko <jekaboy2019@gmail.com>",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Shebysho/nodejs-hw-mongodb/issues"
   },
