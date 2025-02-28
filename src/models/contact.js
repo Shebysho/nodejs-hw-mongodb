@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { Contact } from '../models/contact.js';
 const contactSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -26,10 +25,6 @@ const contactSchema = new mongoose.Schema({
 export const Contact = mongoose.model('Contact', contactSchema, 'contacts');
 
 export const getContactByIdService = async (contactId) => {
-    try {
-      const contact = await Contact.findById(contactId);
-      return contact;
-    } catch (error) {
-      throw error;
-    }
+    const contact = await Contact.findById(contactId);
+    return contact;
   };
