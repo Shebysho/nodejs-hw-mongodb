@@ -1,26 +1,19 @@
 import mongoose from 'mongoose';
-import pino from 'pino';
-await mongoose.connect(mongodbUri, { ... });
-const logger = pino();
+import { getEnvVar } from '../utils/getEnvVar.js';
 
-const {
-  MONGODB_USER,
-  MONGODB_PASSWORD,
-  MONGODB_URL,
-  MONGODB_DB,
-} = process.env;
-
-const mongodbUri = `mongodb+srv://<span class="math-inline">\{MONGODB\_USER\}\:</span>{MONGODB_PASSWORD}@<span class="math-inline">\{MONGODB\_URL\}/</span>{MONGODB_DB}?retryWrites=true&w=majority`;
-
-export const initMongoConnection = async () => {
+export const initMongoConnection = async () => { 
   try {
-    await mongoose.connect(mongodbUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    logger.info('Mongo connection successfully established!');
-  } catch (error) {
-    logger.error('Error connecting to MongoDB: ', error);
-    process.exit(1);
+    const user = getEnvVar('MONGODB_USER');
+    const pwd = getEnvVar('MONGODB_PASSWORD');
+    const url = getEnvVar('MONGODB_URL');
+    const db = getEnvVar('MONGODB_DB');
+
+    await mongoose.connect(
+      `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority`,
+    );
+    console.log('Mongo connection successfully established!');
+  } catch (e) {
+    console.log('Error while setting up mongo connection', e);
+    throw e;
   }
 };
