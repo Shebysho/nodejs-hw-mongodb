@@ -10,7 +10,6 @@ const logger = pino();
 export const setupServer = () => {
   const app = express();
 
-  app.get('/contacts', getAllContactsController);
 
   app.use(cors());
   app.use(express.json());
@@ -24,7 +23,8 @@ export const setupServer = () => {
     });
     next();
   });
-
+  app.get('/contacts', getAllContactsController);
+  app.get('/contacts/:contactId', getContactByIdController);
   app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
   });
@@ -33,8 +33,6 @@ export const setupServer = () => {
     logger.error(err);
     res.status(500).json({ message: 'Internal Server Error' });
   });
-  app.get('/contacts', getAllContactsController);
-  app.get('/contacts/:contactId', getContactByIdController);
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
