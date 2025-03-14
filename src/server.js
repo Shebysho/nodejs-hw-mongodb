@@ -1,22 +1,13 @@
 import express from "express";
-import cors from "cors";
-import contactsRouter from "./routers/contacts.js";
+import contactsRouter from "./routes/contacts.js";
+import { initMongoConnection } from "./db/initMongoConnection.js";
 
-const app = express();
-
-app.use(cors());
+export const app = express();
 app.use(express.json());
 app.use("/contacts", contactsRouter);
 
-app.use((req, res) => {
-  res.status(404).json({ message: "Route not found" });
-});
-
-app.use((err, req, res, next) => {
-  res.status(err.status || 500).json({
-    status: err.status || 500,
-    message: err.message || "Something went wrong",
-  });
-});
-
-export default app;
+export const startServer = async () => {
+  await initMongoConnection();
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+};
