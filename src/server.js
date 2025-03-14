@@ -1,5 +1,5 @@
 import express from "express";
-import contactsRouter from "./src/routers/contacts.js";
+import contactsRouter from "./routers/contacts.js";
 import { initMongoConnection } from "./db/initMongoConnection.js";
 export const app = express();
 app.use(express.json());
