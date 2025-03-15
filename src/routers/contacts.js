@@ -8,7 +8,7 @@ import {
 } from "../controllers/contactsController.js";
 import { validateBody } from "../middlewares/validateBody.js";
 import { isValidId } from "../middlewares/isValidId.js";
-import contactSchema from "../schemas/contactSchema.js";
+import { contactSchema } from "../schemas/contactSchema.js";
 
 const router = express.Router();
 
