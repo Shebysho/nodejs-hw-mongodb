@@ -1,5 +1,5 @@
 import express from "express";
-import contactsRouter from "./routes/contacts.js";
+import contactsRouter from "./routers/contacts.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
