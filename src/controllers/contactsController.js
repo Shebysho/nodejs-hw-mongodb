@@ -1,4 +1,4 @@
-import Contact from "../models/Contact.js";
+import Contact from "../../models/Contact.js";
 import HttpError from "../helpers/HttpError.js";
 import { isValidObjectId } from "mongoose";
 
