@@ -1,17 +1,16 @@
 import mongoose from 'mongoose';
-import getEnvVar from '../utils/getEnvVar.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
 
-const initMongoConnection = async () => {
+export const initMongoConnection = async () => {
   try {
     const user = getEnvVar('MONGODB_USER');
     const pwd = getEnvVar('MONGODB_PASSWORD');
     const url = getEnvVar('MONGODB_URL');
-    const db = getEnvVar('MONGODB_DB');
+    const db = getEnvVar('MONGODB_DB', 'default-database');
 
     await mongoose.connect(
-      `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority`,
-    );
-
+        `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority`
+      );
     console.log('Mongo connection successfully established!');
   } catch (e) {
     console.log('Error while setting up mongo connection', e);
