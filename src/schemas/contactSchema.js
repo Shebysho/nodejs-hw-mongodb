@@ -1,11 +1,7 @@
-const Joi = require("joi");
+import Joi from "joi";
 
-const contactSchema = Joi.object({
-  name: Joi.string().min(3).max(30).required(),
-  email: Joi.string().email().optional(),
-  phoneNumber: Joi.string().pattern(/^\+?[0-9]{10,15}$/).required(),
-  isFavourite: Joi.boolean().optional(),
-  contactType: Joi.string().valid("home", "work", "personal").required(),
+export const contactSchema = Joi.object({
+    name: Joi.string().min(2).max(30).required(),
+    email: Joi.string().email().required(),
+    favorite: Joi.boolean().optional(),
 });
-
-module.exports = { contactSchema };
