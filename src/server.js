@@ -1,23 +1,32 @@
-import express from "express";
-import logger from "morgan";
-import cors from "cors";
-import contactsRouter from "./routes/api/contactsRouter.js"; 
-const app = express();
+import express from 'express';
+import pino from 'pino-http';
+import cors from 'cors';
+import getEnvVar from './utils/getEnvVar.js';
+import contactsRouter from './routers/contacts.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+const PORT = Number(getEnvVar('PORT', '8080'));
 
-const formatsLogger = app.get("env") === "development" ? "dev" : "short";
+async function setupServer() {
+  const app = express();
 
-app.use(logger(formatsLogger));
-app.use(cors());
-app.use(express.json());
+  app.use(express.json());
+  app.use(cors());
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
 
-app.use("/api/contacts", contactsRouter);
+  app.use(contactsRouter);
+  app.use('*', notFoundHandler);
+  app.use(errorHandler);
 
-app.use((req, res) => {
-  res.status(404).json({ message: "Not found" });
-});
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
 
-app.use((err, req, res, next) => {
-  res.status(500).json({ message: err.message });
-});
-
-export default app;
+export default setupServer;

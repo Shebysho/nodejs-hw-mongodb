@@ -1,7 +1,15 @@
-export const getEnvVar = (key) => {
-    if (!process.env[key]) {
-      throw new Error(`Environment variable ${key} is not set!`);
-    }
-    return process.env[key];
-  };
-  
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+function getEnvVar(name, defaultValue) {
+  const value = process.env[name];
+
+  if (value) return value;
+
+  if (defaultValue) return defaultValue;
+
+  throw new Error(`Missing: process.env['${name}'].`);
+}
+
+export default getEnvVar;

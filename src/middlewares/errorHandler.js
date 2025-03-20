@@ -1,14 +1,18 @@
-import Joi from "joi";
+import { HttpError } from 'http-errors';
 
-export const contactValidationSchema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
-    email: Joi.string().email().required()
-});
+export const errorHandler = (err, req, res, next) => {
+  if (err instanceof HttpError) {
+    res.status(err.status).json({
+      status: err.status,
+      message: err.name,
+      data: err,
+    });
+    return;
+  }
 
-export const validateBody = (schema) => (req, res, next) => {
-    const { error } = schema.validate(req.body, { abortEarly: false });
-    if (error) {
-        return res.status(400).json({ status: "error", message: error.details.map((d) => d.message).join(", ") });
-    }
-    next();
+  res.status(500).json({
+    status: 500,
+    message: 'Something went wrong',
+    data: err.message,
+  });
 };
