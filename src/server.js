@@ -2,6 +2,8 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../docs/swagger.json' assert { type: 'json' };
 
 import { getEnvVar } from './utils/getEnvVar.js';
 import router from './routers/index.js';
@@ -28,7 +30,11 @@ export const setupServer = async () => {
   );
 
   app.use(router);
+
   app.use('/uploads', express.static(UPLOAD_DIR));
+
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
   app.use('*', notFoundHandler);
   app.use(errorHandler);
 
